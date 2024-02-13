@@ -36,13 +36,3 @@ Route::put('/appointments/{code}', [AppointmentController::class, 'updateByCode'
 Route::get('/booking/confirm', [CustomerPagesController::class, 'confirm_booking'])->name('confirm_booking');
 
 
-
-Route::get('/admin/appointment', [AppointmentController::class, 'index'])->name('appointment');
-
-Route::get('/admin/barber', [BarberController::class, 'index'])->name('barber');
-
-Route::get('/admin/customer', [CustomerController::class, 'index'])->name('customer');
-
-Route::get('/admin/services', [ServicesController::class, 'index'])->name('services');
-
-
