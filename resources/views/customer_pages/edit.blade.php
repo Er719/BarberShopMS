@@ -51,21 +51,36 @@
                     </ul>
                 </div>
                 @endif
+                
+                <h2 class="section-subheading text-muted" for="appointment_code">Appointment Code:</h2>
+                <input type="text" name="appointment_code" value="{{ $appointment->appointment_code }}" readonly><br>
 
-                <label for="barber_id">Select Barber:</label>
-                <select name="barber_id" id="barber_id" required>
-                    @foreach($barbers as $barber)
-                        <option value="{{ $barber->id }}" {{ $barber->id == $appointment->barber_id ? 'selected' : '' }}>
-                            {{ $barber->name }}
-                        </option>
-                    @endforeach
-                </select><br>
-
-                <label>Select Services:</label><br>
+                <h2 class="section-subheading text-muted">Select Services</h2>
                 @foreach($services as $service)
-                    <input type="checkbox" class="serviceCheckbox" name="services[]" value="{{ $service->id }}"
-                        {{ in_array($service->id, $appointment->services->pluck('id')->toArray()) ? 'checked' : '' }}>
-                    <label>{{ $service->name }} - RM{{ $service->price }} -{{ $service->duration_minutes }} minutes</label><br>
+                    <div>
+                        <input type="checkbox" id="serviceCheckbox{{ $service->id }}" class="serviceCheckbox" name="services[]" value="{{ $service->id }}"
+                            data-name="{{ $service->name }}" data-price="{{ $service->price }}" data-duration="{{ $service->duration_minutes }}"
+                            {{ in_array($service->id, $appointment->services->pluck('id')->toArray()) ? 'checked' : '' }}>
+                        <label class="btn btn-outline-primary service-label" for="serviceCheckbox{{ $service->id }}">
+                            <span>{{ $service->name }}</span><br>
+                            <span>RM{{ $service->price }}</span><br>
+                            <span>{{ $service->duration_minutes }} minutes</span>
+                        </label>
+                    </div>
+                @endforeach
+
+                <div class="text-left">
+                    <h2 class="section-subheading text-muted">Choose Barber</h2>
+                </div>
+                @foreach($barbers as $barber)
+                    <input type="radio" name="barber_id" value="{{ $barber->id }}" id="barber{{ $barber->id }}" class="barber-radio"
+                        {{ $loop->first ? 'checked' : '' }}>
+                    <label for="barber{{ $barber->id }}" class="barber-label">
+                        <img class="barber-image mx-auto rounded-circle" src={{ asset('storage/' . $barber->image_path) }} alt="Barber Image" />
+                        <div class="barber-info">
+                            <span>{{ $barber->name }}</span>
+                        </div>
+                    </label>
                 @endforeach
 
                 <label for="customer_name">Customer Name:</label>
@@ -77,71 +92,38 @@
                 <label for="datetime">Select Date and Time:</label>
                 <input type="datetime-local" name="datetime" value="{{ \Carbon\Carbon::parse($appointment->datetime)->format('Y-m-d\TH:i') }}" required><br>
 
-                <label for="appointment_code">Appointment Code:</label>
-                <input type="text" name="appointment_code" value="{{ $appointment->appointment_code }}" readonly><br>
-
-                <!-- Display the calculated values -->
-                <div id="totalPrice">Total Price: RM0.00</div>
-                <div id="totalDuration">Total Duration: 0 minutes</div>
-
-                <!-- Display selected services -->
-                <div id="selectedServices">Selected Services:</div>
-
                 <input type="submit" value="Update Appointment">
             </div>
         </section>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Get all service checkboxes
-                var serviceCheckboxes = document.querySelectorAll('.serviceCheckbox');
-        
-                // Add event listener for each checkbox
-                serviceCheckboxes.forEach(function(checkbox) {
-                    checkbox.addEventListener('change', calculateTotal);
-                });
-        
-                function calculateTotal() {
-                    // Get all checked checkboxes
-                    var checkedCheckboxes = document.querySelectorAll('.serviceCheckbox:checked');
-                    var totalPrice = 0;
-                    var totalDuration = 0;
-                    var selectedServices = [];
-        
-                    // Calculate total price and duration
-                    checkedCheckboxes.forEach(function(checkbox) {
-                        var price = parseFloat(checkbox.nextElementSibling.textContent.split(' - ')[1].replace('RM', ''));
-                        var duration = parseInt(checkbox.nextElementSibling.textContent.split(' - ')[1].split(' ')[1]);
-        
-                        totalPrice += price;
-                        totalDuration += duration;
-        
-                        // Add selected service details
-                        selectedServices.push({
-                            name: checkbox.nextElementSibling.textContent.split(' - ')[0],
-                            price: price,
-                            duration: duration
-                        });
-                    });
-        
-                    // Update the total price and duration on the page
-                    document.getElementById('totalPrice').textContent = 'Total Price: RM' + totalPrice.toFixed(2);
-                    document.getElementById('totalDuration').textContent = 'Total Duration: ' + totalDuration + ' minutes';
-        
-                    // Update selected services on the page
-                    var selectedServicesDiv = document.getElementById('selectedServices');
-                    selectedServicesDiv.innerHTML = 'Selected Services:';
-                    selectedServices.forEach(function(service) {
-                        var serviceDetails = document.createElement('div');
-                        serviceDetails.textContent = `${service.name} - RM${service.price}  ${service.duration} minutes`;
-                        selectedServicesDiv.appendChild(serviceDetails);
-                    });
-                }
-        
-                // Trigger initial calculation
-                calculateTotal();
-            });
-        </script>
-        
+        <section>
+            <div class="overview-container">
+                <div id="selectedServices" class="info-container">
+                    <strong>Selected Services:</strong>
+                    <ul id="selectedServicesList"></ul>
+                </div>
+
+                <div id="selectedBarberInfo" class="info-container">
+                    <strong>Selected Barber:</strong>
+                    <p id="selectedBarberName"></p>
+                    <img id="selectedBarberImage" class="barber-image" alt="Selected Barber Image">
+                </div>
+            
+                <div id="totalDuration" class="info-container">
+                    <strong>Total Duration:</strong> 0 minutes
+                </div>
+            
+                <div id="dateTimeInfo" class="info-container">
+                    <strong>Date and Time:</strong>
+                    <p id="startDateTime"></p>
+                    <p id="endDateTime"></p>
+                </div>
+
+                <div id="totalPrice" class="info-container">
+                    <strong>Total Price:</strong> RM 0.00
+                </div>
+
+            </div>            
+        </section>
     </form>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

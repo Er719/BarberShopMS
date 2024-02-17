@@ -62,7 +62,15 @@ class AppointmentCrudController extends CrudController
             'attribute' => 'name', // foreign key attribute that is shown to user
 
          ]);
-         CRUD::column('date')->type('text');
+         CRUD::column([
+            'name' => 'services',
+            'label' => 'Services',
+            'type' => 'text',
+            'value' => function ($entry) {
+                return $entry->services->pluck('name')->implode(', '); // Assuming 'name' is the attribute to display
+            },
+        ]);
+         CRUD::column('date')->type('date');
          CRUD::column('start_time')->type('time');
          CRUD::column('end_time')->type('time');
          CRUD::column('total_price')->type('number')->prefix('RM');
@@ -97,7 +105,14 @@ class AppointmentCrudController extends CrudController
             'attribute' => 'name', // foreign key attribute that is shown to user
 
          ]);
-         CRUD::field('date')->type('text');
+         CRUD::field([
+            'name' => 'services',
+            'label' => 'Services',
+            'type' => 'select_multiple',
+            'entity' => 'services',
+            'attribute' => 'name', // Assuming 'name' is the attribute to display
+        ]);
+         CRUD::field('date')->type('date');
          CRUD::field('start_time')->type('time');
          CRUD::field('end_time')->type('time');
          CRUD::field('total_price')->type('number')->prefix('RM');

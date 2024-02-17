@@ -5,3 +5,4 @@
 <x-backpack::menu-item title="Appointments" icon="la la-question" :link="backpack_url('appointment')" />
 <x-backpack::menu-item title="Barbers" icon="la la-question" :link="backpack_url('barber')" />
 <x-backpack::menu-item title="Services" icon="la la-question" :link="backpack_url('service')" />
+<x-backpack::menu-item title="Customers" icon="la la-question" :link="backpack_url('customer')" />

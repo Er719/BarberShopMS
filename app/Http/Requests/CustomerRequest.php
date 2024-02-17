@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BarberRequest extends FormRequest
+class CustomerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,7 @@ class BarberRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'sometimes|required|min:5|max:255',
-            'picture' => 'sometimes|required|image|mimes:jpeg,jpg,png,svg|max:2048'
+            // 'name' => 'required|min:5|max:255'
         ];
     }
 

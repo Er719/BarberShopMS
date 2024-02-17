@@ -69,7 +69,7 @@
                             <input type="radio" name="barber_id" value="{{ $barber->id }}" id="barber{{ $barber->id }}" class="barber-radio"
                                 {{ $loop->first ? 'checked' : '' }}>
                             <label for="barber{{ $barber->id }}" class="barber-label">
-                                <img class="barber-image mx-auto rounded-circle" src="/assets/img/team/1.jpg" alt="Barber Image" />
+                                <img class="barber-image mx-auto rounded-circle" src={{ asset('storage/' . $barber->image_path) }} alt="Barber Image" />
                                 <div class="barber-info">
                                     <span>{{ $barber->name }}</span>
                                 </div>

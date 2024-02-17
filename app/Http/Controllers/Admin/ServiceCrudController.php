@@ -39,12 +39,9 @@ class ServiceCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
-
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
+        CRUD::column('name')->type('text');
+        CRUD::column('price')->type('number')->prefix('RM');
+        CRUD::column('duration_minutes')->type('text')->label('duration')->suffix(' minutes');
     }
 
     /**
@@ -57,11 +54,10 @@ class ServiceCrudController extends CrudController
     {
         CRUD::setValidation(ServiceRequest::class);
         CRUD::setFromDb(); // set fields from db columns.
-
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        
+        CRUD::field('name')->type('text');
+        CRUD::field('price')->type('number')->prefix('RM');
+        CRUD::field('duration_minutes')->type('text')->label('duration')->suffix(' minutes');
     }
 
     /**

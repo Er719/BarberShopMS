@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\BarberRequest;
+use App\Http\Requests\CustomerRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class BarberCrudController
+ * Class CustomerCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class BarberCrudController extends CrudController
+class CustomerCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,9 +26,9 @@ class BarberCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Barber::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/barber');
-        CRUD::setEntityNameStrings('barber', 'barbers');
+        CRUD::setModel(\App\Models\Customer::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/customer');
+        CRUD::setEntityNameStrings('customer', 'customers');
     }
 
     /**
@@ -39,8 +39,12 @@ class BarberCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('name')->type('text');
-        CRUD::column('image_path')->type('upload')->withFiles(true);
+        CRUD::setFromDb(); // set columns from db columns.
+
+        /**
+         * Columns can be defined using the fluent syntax:
+         * - CRUD::column('price')->type('number');
+         */
     }
 
     /**
@@ -51,9 +55,13 @@ class BarberCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(BarberRequest::class);
-        CRUD::field('name')->type('text');
-        CRUD::field('image_path')->type('upload')->withFiles(true);
+        CRUD::setValidation(CustomerRequest::class);
+        CRUD::setFromDb(); // set fields from db columns.
+
+        /**
+         * Fields can be defined using the fluent syntax:
+         * - CRUD::field('price')->type('number');
+         */
     }
 
     /**

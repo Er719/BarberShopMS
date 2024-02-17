@@ -120,7 +120,7 @@
                         </tr>
                         <tr>
                             <td>Picture:</td>
-                            <td><img class="barber-image mx-auto rounded-circle" src={{ $appointment->barber->image_path }} alt="Barber Image" /></td>
+                            <td><img class="barber-image mx-auto rounded-circle" src={{ asset('storage/' . $appointment->barber->image_path) }} alt="Barber Image" /></td>
                         </tr>
                     </tbody>
                 </table>

@@ -49,6 +49,16 @@ document.addEventListener('DOMContentLoaded', function () {
     serviceCheckboxes.forEach(function (checkbox) {
         checkbox.addEventListener('change', calculateTotal);
     });
+    
+    // Add event listener to service labels for styling
+    var serviceLabels = document.querySelectorAll('.service-label');
+    serviceLabels.forEach(function(serviceLabel) {
+        serviceLabel.addEventListener('click', function() {
+            this.classList.toggle('clicked');
+            // Trigger recalculation when a label is clicked
+            calculateTotal();
+        });
+    });
 
     // Get all barber radio buttons
     var barberRadios = document.querySelectorAll('.barber-radio');
@@ -74,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('selectedServicesList').innerHTML = '';
 
         // Calculate total price and duration
-        checkedCheckboxes.forEach(function (checkbox) {
+        checkedCheckboxes.forEach(function(checkbox) {
             var name = checkbox.dataset.name;
             var price = parseFloat(checkbox.dataset.price);
             var duration = parseInt(checkbox.dataset.duration);
@@ -93,6 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('totalPrice').textContent = 'Total Price: RM' + totalPrice.toFixed(2);
         document.getElementById('totalDuration').textContent = 'Total Duration: ' + totalDuration + ' minutes';
 
+        
         // Update the date and time information if a valid date is available
         var startDateTimeInput = document.querySelector('input[name="datetime"]');
         var startDateTime = startDateTimeInput ? startDateTimeInput.value : null;
@@ -105,7 +116,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 'Date and Time: ' + formattedStartDateTime + ' - ' + formattedEndDateTime;
         }
     }
-
+    
+    calculateTotal();
     // Function to format date and time
     function formatDateTime(dateTime) {
         var options = {
@@ -172,4 +184,4 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.classList.toggle('clicked');
             });
         });
-    });
+});
