@@ -43,25 +43,22 @@ class AppointmentCrudController extends CrudController
     {
         // CRUD::setFromDb(); // set columns from db columns.
         CRUD::column('id')->type('number')->label('Appointment ID');
-        CRUD::column([  // Select
-            'label'     => "Customer",
-            'type'      => 'select',
-            'name'      => 'customer_id', // the db column for the foreign key
-            'entity'    => 'customer',
-            'model'     => "App\Models\Customer", // related model
-            'attribute' => 'name', // foreign key attribute that is shown to user
-
-         ]);
-
-         CRUD::column([  // Select
-            'label'     => "Barber",
-            'type'      => 'select',
-            'name'      => 'barber_id', // the db column for the foreign key
-            'entity'    => 'barber',
-            'model'     => "App\Models\Barber", // related model
-            'attribute' => 'name', // foreign key attribute that is shown to user
-
-         ]);
+        CRUD::column([
+            'name' => 'customer',
+            'label' => 'Customer',
+            'type' => 'text',
+            'value' => function ($entry) {
+                return $entry->customer->name; // Assuming 'name' is the attribute to display
+            },
+        ]);
+        CRUD::column([
+            'name' => 'barber',
+            'label' => 'Barber',
+            'type' => 'text',
+            'value' => function ($entry) {
+                return $entry->barber->name; // Assuming 'name' is the attribute to display
+            },
+        ]);
          CRUD::column([
             'name' => 'services',
             'label' => 'Services',

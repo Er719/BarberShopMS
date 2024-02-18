@@ -40,7 +40,7 @@ class BarberCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::column('name')->type('text');
-        CRUD::column('image_path')->type('upload')->withFiles(true);
+        CRUD::column('image_path')->type('upload')->withFiles();
     }
 
     /**
@@ -53,7 +53,7 @@ class BarberCrudController extends CrudController
     {
         CRUD::setValidation(BarberRequest::class);
         CRUD::field('name')->type('text');
-        CRUD::field('image_path')->type('upload')->withFiles(true);
+        CRUD::field('image_path')->type('upload')->withFiles();
     }
 
     /**
